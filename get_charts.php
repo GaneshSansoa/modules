@@ -63,19 +63,18 @@
 
       <div class="container">
 		<div class="row justify-content-center">
-		  <div class="col-3">
-			   <form method="post" onsubmit="return false;" id="upload_data" >
-			   Upload:<input type="file" class="form-control" name="csv_data">
-			   <input type="submit" name="uplaod" value="Upload">
-			   </form>			
+		  <div class="col-12">
+            <form action="" id="upload_req" onsubmit="return false;">
+            <input type="text" name="starts">
+                <input type="text" name="ends">
+            <input type="submit" class="btn btn-dark" value="Submit">
+            </form>
+          <canvas id="myChart" width="400" height="400"></canvas>
 		  </div>
 	  
 		</div>
-	<table id="show_data" class="table_data table table-border">
-		
-	</table>
-    <canvas id="myChart" width="400" height="400"></canvas>
-
+	
+   
       </div>
 
     </main><!-- /.container -->
@@ -92,29 +91,20 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
 	<script>
 	$(document).ready(function(){
-		$("#upload_data").submit(function(){
-			$.ajax({
-				url:"submit_data.php",
-				type:"POST",
-				contentType:false,
-				processData:false,
-				data:new FormData($("#upload_data")[0]),
-				success:function(res){
-				$.each(res,function(key,value){
-				$("#show_data").append("<tr>")
-					$.each(value, function(key,value){
-						// console.log(key + ": " + value);
-						$("#show_data").append("<td>"+ value +"</td>")
-					})
-				$("#show_data").append("</tr>")
-				})
-				
-				}
-			
-			});
-		
-		
-		})
+        var date = {};
+		$("#upload_req").submit(function(){
+            $.ajax({
+                url:"get_res.php",
+                type:"POST",
+                data:$(this).serialize(),
+                success:function(res){
+                    for(var i = 0; i < res.length; i++){
+                        date[i] = res[i].Date;
+                    }
+                    console.log(date);
+                }
+            })
+        })
 	
 	
 	
@@ -127,66 +117,66 @@
 	
     </script>
         <script>
-            var ctx = document.getElementById('myChart');
-            var myChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: [0, 0.5, 1.0, 1.5 ,2.0 , 2.5],
-                    datasets: [{
-                        label: '# of Votes',
-                        data: [12, 19, 3, 5.5, 2, 3,4,5],
-                        backgroundColor: [
-                            'rgba(255, 99, 132, 0.2)',
-                            'rgba(54, 162, 235, 0.2)',
-                            'rgba(255, 206, 86, 0.2)',
-                            'rgba(75, 192, 192, 0.2)',
-                            'rgba(153, 102, 255, 0.2)',
-                            'rgba(255, 159, 64, 0.2)'
-                        ],
-                        borderColor: [
-                            'rgba(255, 99, 132, 1)',
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)',
-                            'rgba(75, 192, 192, 1)',
-                            'rgba(153, 102, 255, 1)',
-                            'rgba(255, 159, 64, 1)'
-                        ],
-                        borderWidth: 1
-                    },
-                    {
-                        label: '# of Votes',
-                        data: [20, 12, 13, 2, 9, 11],
-                        backgroundColor: [
-                            'rgba(255, 99, 132, 0.2)',
-                            'rgba(54, 162, 235, 0.2)',
-                            'rgba(255, 206, 86, 0.2)',
-                            'rgba(75, 192, 192, 0.2)',
-                            'rgba(153, 102, 255, 0.2)',
-                            'rgba(255, 159, 64, 0.2)'
-                        ],
-                        borderColor: [
-                            'rgba(255, 99, 132, 1)',
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)',
-                            'rgba(75, 192, 192, 1)',
-                            'rgba(153, 102, 255, 1)',
-                            'rgba(255, 159, 64, 1)'
-                        ],
-                        borderWidth: 1
-                    }
-                    ],
+            // var ctx = document.getElementById('myChart');
+            // var myChart = new Chart(ctx, {
+            //     type: 'line',
+            //     data: {
+            //         labels: [0, 0.5, 1.0, 1.5 ,2.0 , 2.5],
+            //         datasets: [{
+            //             label: '# of Votes',
+            //             data: [12, 19, 3, 5.5, 2, 3,4,5],
+            //             backgroundColor: [
+            //                 'rgba(255, 99, 132, 0.2)',
+            //                 'rgba(54, 162, 235, 0.2)',
+            //                 'rgba(255, 206, 86, 0.2)',
+            //                 'rgba(75, 192, 192, 0.2)',
+            //                 'rgba(153, 102, 255, 0.2)',
+            //                 'rgba(255, 159, 64, 0.2)'
+            //             ],
+            //             borderColor: [
+            //                 'rgba(255, 99, 132, 1)',
+            //                 'rgba(54, 162, 235, 1)',
+            //                 'rgba(255, 206, 86, 1)',
+            //                 'rgba(75, 192, 192, 1)',
+            //                 'rgba(153, 102, 255, 1)',
+            //                 'rgba(255, 159, 64, 1)'
+            //             ],
+            //             borderWidth: 1
+            //         },
+            //         {
+            //             label: '# of Votes',
+            //             data: [20, 12, 13, 2, 9, 11],
+            //             backgroundColor: [
+            //                 'rgba(255, 99, 132, 0.2)',
+            //                 'rgba(54, 162, 235, 0.2)',
+            //                 'rgba(255, 206, 86, 0.2)',
+            //                 'rgba(75, 192, 192, 0.2)',
+            //                 'rgba(153, 102, 255, 0.2)',
+            //                 'rgba(255, 159, 64, 0.2)'
+            //             ],
+            //             borderColor: [
+            //                 'rgba(255, 99, 132, 1)',
+            //                 'rgba(54, 162, 235, 1)',
+            //                 'rgba(255, 206, 86, 1)',
+            //                 'rgba(75, 192, 192, 1)',
+            //                 'rgba(153, 102, 255, 1)',
+            //                 'rgba(255, 159, 64, 1)'
+            //             ],
+            //             borderWidth: 1
+            //         }
+            //         ],
                     
-                },
-                options: {
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: true
-                            }
-                        }]
-                    }
-                }
-            });
+            //     },
+            //     options: {
+            //         scales: {
+            //             yAxes: [{
+            //                 ticks: {
+            //                     beginAtZero: true
+            //                 }
+            //             }]
+            //         }
+            //     }
+            // });
             </script>
   </body>
 </html>
