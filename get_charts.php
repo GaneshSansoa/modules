@@ -69,8 +69,11 @@
                 <input type="text" name="ends">
             <input type="submit" class="btn btn-dark" value="Submit">
             </form>
-          <canvas id="myChart" width="400" height="400"></canvas>
+
 		  </div>
+          <div class="col-6">
+          <canvas id="myChart" width="" height=""></canvas>
+          </div>
 	  
 		</div>
 	
@@ -91,17 +94,62 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
 	<script>
 	$(document).ready(function(){
-        var date = {};
-		$("#upload_req").submit(function(){
+
+
+
+ 		$("#upload_req").submit(function(){
             $.ajax({
                 url:"get_res.php",
                 type:"POST",
                 data:$(this).serialize(),
                 success:function(res){
+                    var time = [];
+                    var inside_vpd = [];
+                    var outside_vpd = [];
                     for(var i = 0; i < res.length; i++){
-                        date[i] = res[i].Date;
+                        time[i] = res[i].Date;
+                        var sat_vap_pressure = 0.7392 * Math.exp(0.06264 * res[i].Tapc * (Math.exp(-0.0019 * time[i])));
+                        var actual_vap_pressure = 0.8427 * (res[i].Eapc) / 100 * Math.exp(0.06264 * res[i].Tapc * Math.exp(-0.0019 * time[i]) - 0.00021 * time[i]);
+                         inside_vpd[i] = sat_vap_pressure - actual_vap_pressure;
+                        // inside_temp[i] = res[i].Tapc;
+                        // inside_hum = res[i].Eapc;
+                        // outside_temp = res[i].Taos;
+                        outside_vpd[i] = 0.7392 * ( 1 - res[i].Eaos/100 ) * Math.exp(0.058 * res[i].Taos);
                     }
-                    console.log(date);
+                    console.log(time);
+                    console.log(outside_vpd);
+                    var ctx = document.getElementById('myChart');
+            var myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: time,
+                    datasets: [
+                        {
+                        label: 'Inside Vapour Pressure Deficits',
+                        data: inside_vpd,
+                        fill:false,
+                        borderColor:'rgb(255,0,0)' 
+                    },
+                    {
+                        label:'Outside Vapour Pressure Deficts',
+                        data: outside_vpd,
+                        fill:false,
+                        borderColor:'rgb(0,255,0)'
+                    }],
+                    
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: false
+                            },
+
+                        }]
+                    },
+                    responsive:true
+                }
+            });
                 }
             })
         })
@@ -117,66 +165,7 @@
 	
     </script>
         <script>
-            // var ctx = document.getElementById('myChart');
-            // var myChart = new Chart(ctx, {
-            //     type: 'line',
-            //     data: {
-            //         labels: [0, 0.5, 1.0, 1.5 ,2.0 , 2.5],
-            //         datasets: [{
-            //             label: '# of Votes',
-            //             data: [12, 19, 3, 5.5, 2, 3,4,5],
-            //             backgroundColor: [
-            //                 'rgba(255, 99, 132, 0.2)',
-            //                 'rgba(54, 162, 235, 0.2)',
-            //                 'rgba(255, 206, 86, 0.2)',
-            //                 'rgba(75, 192, 192, 0.2)',
-            //                 'rgba(153, 102, 255, 0.2)',
-            //                 'rgba(255, 159, 64, 0.2)'
-            //             ],
-            //             borderColor: [
-            //                 'rgba(255, 99, 132, 1)',
-            //                 'rgba(54, 162, 235, 1)',
-            //                 'rgba(255, 206, 86, 1)',
-            //                 'rgba(75, 192, 192, 1)',
-            //                 'rgba(153, 102, 255, 1)',
-            //                 'rgba(255, 159, 64, 1)'
-            //             ],
-            //             borderWidth: 1
-            //         },
-            //         {
-            //             label: '# of Votes',
-            //             data: [20, 12, 13, 2, 9, 11],
-            //             backgroundColor: [
-            //                 'rgba(255, 99, 132, 0.2)',
-            //                 'rgba(54, 162, 235, 0.2)',
-            //                 'rgba(255, 206, 86, 0.2)',
-            //                 'rgba(75, 192, 192, 0.2)',
-            //                 'rgba(153, 102, 255, 0.2)',
-            //                 'rgba(255, 159, 64, 0.2)'
-            //             ],
-            //             borderColor: [
-            //                 'rgba(255, 99, 132, 1)',
-            //                 'rgba(54, 162, 235, 1)',
-            //                 'rgba(255, 206, 86, 1)',
-            //                 'rgba(75, 192, 192, 1)',
-            //                 'rgba(153, 102, 255, 1)',
-            //                 'rgba(255, 159, 64, 1)'
-            //             ],
-            //             borderWidth: 1
-            //         }
-            //         ],
-                    
-            //     },
-            //     options: {
-            //         scales: {
-            //             yAxes: [{
-            //                 ticks: {
-            //                     beginAtZero: true
-            //                 }
-            //             }]
-            //         }
-            //     }
-            // });
+            
             </script>
   </body>
 </html>

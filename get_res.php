@@ -3,7 +3,7 @@ include("config.php");
 // var_dump($_POST);
 $start = $_POST["starts"];
 $end = $_POST["ends"];
-$query = "select * from dataset where Date between '".$start."' and '".$end."'";
+$query = "select HOUR(Date) as Date,Tapc,Eapc,Taos,Eaos from dataset where Date >= '".$start."' and Date <= '".$end."'";
 $res = $conn->query($query);
 $data = array();
 if($res->num_rows > 0){
@@ -17,6 +17,9 @@ if($res->num_rows > 0){
         $data[$i]["Eaos"] = $row["Eaos"];
         $i++;
     }
+}
+else{
+
 }
 header('Content-type: application/json');
 echo json_encode($data);
