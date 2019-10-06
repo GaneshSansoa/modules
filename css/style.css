@@ -1,4 +1,39 @@
+
 .table_data{
     max-height: 300px;
+}
+#res{
+    height:100%;
+    padding: 50px;
+    border: 1px solid rgb(100, 100, 100);
+    border-radius: 8px;
+    -webkit-box-shadow: 0px 5px 10px 2px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 5px 10px 2px rgba(0,0,0,0.75);
+    box-shadow: 0px 5px 10px 2px rgba(0,0,0,0.75);
+}
+.footer{
+    padding:2em;
     
 }
+
+html,body{
+    margin:0;
+    padding:0;
+    height:100%;
+}
+main {
+    position: relative;
+    min-height: 100vh;
+  } 
+  #footer {
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    height: 2.5rem;
+    margin-top:30px;   
+    padding-top:30px;
+    padding-bottom:30px;
+    background: #007bff !important;
+    color:white;
+    /* Footer height */
+  }
