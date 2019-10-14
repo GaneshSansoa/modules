@@ -2,15 +2,18 @@
 .table_data{
     max-height: 300px;
 }
-#res{
-    height:100%;
-    padding: 50px;
+
+#card{
+    height:90%;
+    padding: 30px;
+    margin:10px 0px 10px 0px;
     border: 1px solid rgb(100, 100, 100);
     border-radius: 8px;
     -webkit-box-shadow: 0px 5px 10px 2px rgba(0,0,0,0.75);
     -moz-box-shadow: 0px 5px 10px 2px rgba(0,0,0,0.75);
     box-shadow: 0px 5px 10px 2px rgba(0,0,0,0.75);
 }
+
 .footer{
     padding:2em;
     
@@ -54,4 +57,22 @@ main {
   .result{
       padding:40px;
       margin:20px 0px 20px 0px;
+  }
+  .chart-container{
+    width:100%;
+    height:70vh;
+    position: relative;
+  }
+  @media only screen and (max-width: 768px) {
+    /* For mobile phones: */
+    #card{
+      padding:10px;
+    }
+    h4{
+      font-size:1.2rem;
+      font-weight: bolder;
+    }
+    /* .chart-container{
+      
+    } */
   }
