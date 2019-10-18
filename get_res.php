@@ -30,7 +30,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $start = date('Y-m-d H:00:00', strtotime($start));
     $end = date('Y-m-d H:00:00', strtotime($end));
     // echo $myd;
-    $query = "select HOUR(Date) as Date,Date(Date) as Date1,Tapc,Eapc,Taos,Eaos from dataset where Date >= '".$start."' and Date <= '".$end."'";
+    $query = "select HOUR(Date) as Date,Date(Date) as Date1,Date as Date2,Tapc,Eapc,Taos,Eaos from dataset where Date >= '".$start."' and Date <= '".$end."'";
     $res = $conn->query($query);
     $data = array();
     if($res->num_rows > 0){
@@ -38,6 +38,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         while($row = mysqli_fetch_assoc($res)){
             $data[$i] = array();
             $data[$i]["Date1"] = $row["Date1"];
+            $data[$i]["Date2"] = $row["Date2"];
             $data[$i]["Date"] = $row["Date"];
             $data[$i]["Tapc"] = $row["Tapc"];
             $data[$i]["Eapc"] = $row["Eapc"];

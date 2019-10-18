@@ -43,31 +43,13 @@
    
           </div>
         <div class="container-fluid">
-            <div class="row justify-content-center" id="res">
+            <div class="row justify-content-center" id="res">        
                 <div class="col-sm-12">
-                    <div id="card">
-                <!-- <h4>Results:</h4> -->
-                <div class="chart-container">    
-                    <canvas id="myChart"></canvas>
-                </div>
-                    </div>
-                </div>
-                <div class="col-sm-6" >
-                <div id="card">
-                <!-- <h4> Comparing Inside VPD With Arellano's Equation </h4> -->
-                <div class="chart-container">
-                <canvas id="myChart1" width="" height=""></canvas>
-                </div>
-                </div>
-                </div>
-                <div class="col-sm-6">
                 <div id="card">
                 <!-- <h4> Comparing Outside VPD With Arellano's Equation </h4> -->
-                <div class="chart-container">
-                <canvas id="myChart2" width="" height=""></canvas>
+                <div id="chartContainer" style="height: 70vh; width: 100%;"></div>
                 </div>
-                </div>
-                </div>                        
+                </div>                
                 
                 </div>
 
@@ -206,171 +188,87 @@
                             otherColors2[index]="rgb(0,63,92)";
                         }
                         });
-                    console.log(insideRadius);
-                    var ctx = document.getElementById('myChart');
-                    var ctx1 = document.getElementById('myChart1');
-                    var ctx2 = document.getElementById('myChart2');
-            var myChart = new Chart(ctx, {
-                
-                type: 'line',
-                data: {
-                    labels: time,
-                    datasets: [
-                        {
-                        label: 'VPD\'',
-                        data: inside_vpd,
-                        fill:false,
-                        borderColor:'rgb(255,166,0)',
-                        backgroundColor:insideColors,
-                        pointRadius:insideRadius         
-                    },
-                    {
-                        label:'VPD\'\'',
-                        data: outside_vpd,
-                        fill:false,
-                        borderColor:'rgb(5,125,27)',
-                        backgroundColor:outsideColors,
-                    },
-                    {
-                        label:'Difference',
-                        data: insideVsOutside,
-                        fill:true,
-                        borderColor:'rgb(255,0,0)',
-
-                    }
-                    ],
-                    
-                },
-                options: {
-                    title: {
-					display: true,
-					text: 'Comparing VPD\' and VPD\'\''
-				    },
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: false,
-                                
-                            },
-
-                        }],
-                        
-                    },
-                    responsive:true,
-                    intersect:true,
-                    maintainAspectRatio: false,
-                    tooltips: {
-						
-						mode: 'index',
-						intersect: false,
-					},
-
-                }
+                        var x = time;
+            // var time = time.map(i => parseFloat(i));
+            var inside_vpd = inside_vpd.map(i => parseFloat(i));
+            var outside_vpd = outside_vpd.map(i => parseFloat(i));
+            console.log(outside_vpd);
+            var dataPoints = [];
+            var x2 = [1,2,3];
+            var y2 = [4,5,6];
+            var dataPoints1 = [];
+            for (var i = 0; i < inside_vpd.length; i++) {
+            dataPoints.push({
+                label: dateTime[i],
+                x: new Date(dateTime[i]),
+                y: inside_vpd[i]
             });
-            var myChart1 = new Chart(ctx1, {
-                type: 'line',
-                data: {
-                    labels: time,
-                    datasets: [
-                        {
-                        label: 'VPD\'',
-                        data: inside_vpd,
-                        fill:false,
-                        borderColor:'rgb(255,166,0)' ,
-                        backgroundColor:insideColors
-                    },
-                    {
-                        label:'VPD1\'',
-                        data: arellano_inside_vpd,
-                        fill:false,
-                        borderColor:'rgb(0,63,92)',
-                        backgroundColor:otherColors
-                    },
-                    {
-                        label:'Difference',
-                        data: insideVsInside_1,
-                        fill:true,
-                        borderColor:'rgb(255,0,0)',
-
-                    }
-                    ],
-                    
-                },
-                options: {
-                    title: {
-					display: true,
-					text: 'Comparing VPD\' and VPD1\''
-				    },
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: false
-                            },
-
-                        }]
-                    },
-                    responsive:true,
-                    intersect:true,
-                    maintainAspectRatio: false,
-                    tooltips: {
-						
-						mode: 'index',
-						intersect: false,
-					},
-                }
+            }
+            for (var i = 0; i < outside_vpd.length; i++) {
+            dataPoints1.push({
+                label: dateTime[i],
+                x : new Date(dateTime[i]),
+                y: outside_vpd[i]
             });
-            var myChart2 = new Chart(ctx2, {
-                type: 'line',
-                data: {
-                    labels: time,
-                    datasets: [
-                        {
-                        label: 'VPD\'\'',
-                        data: outside_vpd,
-                        fill:false,
-                        borderColor:'rgb(5,125,27)' ,
-                        backgroundColor:outsideColors
-                    },
-                    {
-                        label:'VPD1\'\'',
-                        data: arellano_outside_vpd,
-                        fill:false,
-                        borderColor:'rgb(0,63,92)',
-                        backgroundColor:otherColors2
-                    },
-                    {
-                        label:'Difference',
-                        data: outsideVsOutside_1,
-                        fill:true,
-                        borderColor:'rgb(255,0,0)',
+            }
+            // console.log(dataPoints1);
+            // console.log(dataPoints);
+            var chart = new CanvasJS.Chart("chartContainer", {
+		title:{
+			text: "VPD ' vs VPD''"              
+        },
+        zoomEnabled: true,
+        legend: {
+       horizontalAlign: "center", // "center" , "right"
+       verticalAlign: "top",  // "top" , "bottom"
+       fontSize: 15,
+       itemclick:toggleDataSeries,
+       cursor: "pointer"
+        },
+        axisX: {
+            intervalType: "hour",
+            valueFormatString: "YYYY-MM-DD HH:mm:ss",
+            labelMaxWidth: 100, // change label width accordingly
+        },
+        axisY:{
+            stripLines:[{
+                value:1.10,
+                label:"Maximum" 
+            },
+            {
+                value:0.52,
+                label:"Minimum"
+            }
+        ]
+        },
+		data: [              
+		{
+			// Change type to "doughnut", "line", "splineArea", etc.
+            type: "line",
+            showInLegend: true,
+            legendText: "VPD'",
+			dataPoints: dataPoints,
+        },
+        {
+            type: "line",
+            showInLegend: true,
+            legendText: "VPD\'\'",
+            dataPoints: dataPoints1,
+        }
+		]
+	});
+    chart.render();
+    function toggleDataSeries(e) {
+	if(typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+		e.dataSeries.visible = false;
+	}
+	else {
+		e.dataSeries.visible = true;            
+	}
+	chart.render();
+}
 
-                    }
-                    ],
-                    
-                },
-                options: {
-                    title: {
-					display: true,
-					text: 'Comparing VPD\'\' and VPD1\'\''
-				    },
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: false
-                            },
 
-                        }]
-                    },
-                    responsive:true,
-                    intersect:true,
-                    maintainAspectRatio: false,
-                    tooltips: {
-						
-						mode: 'index',
-						intersect: false,
-					},
-                }
-            });
                 }
             })
         })
