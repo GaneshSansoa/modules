@@ -2,12 +2,9 @@
 <html lang="en">
   
 <?php include_once("common-head.php");?>
-  <body>
-
+<body>
 <?php include_once("nav.php");?>
-    
     <main role="main" class="container-fluid" id="page-container">
-
       <div class="container-fluid">
 		<div class="row justify-content-center">
         <h4 id="show_data"></h4>
@@ -21,21 +18,17 @@
             <div class="col-sm-6 form-group">
             <label for="ends">End Date:</label>
             <input type="text" name="ends" class="form-control" id="example2">
-            </div>
-            
+            </div>          
             <div class="col-sm-6 form-group">
             <input type="submit" class="btn btn-dark col-sm-12 form-control" value="Submit">
             </div>
-            
-
-
             </div>
             
                 <!-- <input type="text" name="ends">
                 <input type="text" class="form-control" id="example"> -->
             </form>
 
-		      </div>
+		    </div>
 
 	  
 	    	</div>
@@ -50,8 +43,33 @@
                 <div id="chartContainer" style="height: 70vh; width: 100%;"></div>
                 </div>
                 </div>                
+                <div class="col-sm-12">
+                <div id="card">
+                <!-- <h4> Comparing Outside VPD With Arellano's Equation </h4> -->
+                <div id="chartContainer1" style="height: 70vh; width: 100%;"></div>
+                </div>
+                </div>                
+                <div class="col-sm-6">
+                <div id="card">
+                <!-- <h4> Comparing Outside VPD With Arellano's Equation </h4> -->
+                <div id="chartContainer2" style="height: 70vh; width: 100%;"></div>
+                </div>
+                </div> 
+                <div class="col-sm-6">
+                <div id="card">
+                <!-- <h4> Comparing Outside VPD With Arellano's Equation </h4> -->
+                <div id="chartContainer3" style="height: 70vh; width: 100%;"></div>
+                </div>
+                </div>
+                <div class="col-sm-12">
+                <div id="card">
+                <!-- <h4> Comparing Outside VPD With Arellano's Equation </h4> -->
+                <div id="chartContainer4" style="height: 70vh; width: 100%;"></div>
+                </div>
+                </div> 
                 
                 </div>
+                
 
              
 
@@ -106,6 +124,7 @@
                     $("#res").show();
                     var time = [];
                     var dateTime = [];
+                    var date = [];
                     var inside_vpd = [];
                     var arellano_inside_vpd = [];
                     var outside_vpd = [];
@@ -119,6 +138,7 @@
                             time[i] = res[i].Date + ":00";
                         }
                         dateTime[i] = res[i].Date2;
+                        date[i] = res[i].Date1;
                         var sat_vap_pressure = 0.7392 * Math.exp(0.06264 * res[i].Tapc * (Math.exp(-0.0019 * res[i].Date)));
                         var actual_vap_pressure = 0.8427 * (res[i].Eapc) / 100 * Math.exp(0.06264 * res[i].Tapc * Math.exp(-0.0019 * res[i].Date) - 0.00021 * res[i].Date);
                          inside_vpd[i] = sat_vap_pressure - actual_vap_pressure;
@@ -188,93 +208,392 @@
                             otherColors2[index]="rgb(0,63,92)";
                         }
                         });
-                        var x = time;
+            var x = time;
             // var time = time.map(i => parseFloat(i));
-            var inside_vpd = inside_vpd.map(i => parseFloat(i));
-            var outside_vpd = outside_vpd.map(i => parseFloat(i));
+             inside_vpd = inside_vpd.map(i => parseFloat(i));
+             outside_vpd = outside_vpd.map(i => parseFloat(i));
+             arellano_inside_vpd = arellano_inside_vpd.map(i => parseFloat(i));
+             arellano_outside_vpd = arellano_outside_vpd.map(i => parseFloat(i));
             console.log(outside_vpd);
-            var dataPoints = [];
-            var x2 = [1,2,3];
-            var y2 = [4,5,6];
-            var dataPoints1 = [];
+            var dataPointsInside = [];
+            var dataPointsOutside = [];
+            var dataPointsAInside = [];
+            var dataPointsAOutside = [];
+            console.log(Math.max(...inside_vpd));
             for (var i = 0; i < inside_vpd.length; i++) {
-            dataPoints.push({
-                label: dateTime[i],
-                x: new Date(dateTime[i]),
-                y: inside_vpd[i]
-            });
+                    dataPointsInside.push({
+                    label: dateTime[i],
+                    x: new Date(dateTime[i]),
+                    y: inside_vpd[i]
+                });
+                
+
             }
             for (var i = 0; i < outside_vpd.length; i++) {
-            dataPoints1.push({
+            dataPointsOutside.push({
                 label: dateTime[i],
                 x : new Date(dateTime[i]),
                 y: outside_vpd[i]
             });
             }
+            for (var i = 0; i < arellano_inside_vpd.length; i++) {
+            dataPointsAInside.push({
+                label: dateTime[i],
+                x : new Date(dateTime[i]),
+                y: arellano_inside_vpd[i]
+            });
+            }
+            for (var i = 0; i < arellano_outside_vpd.length; i++) {
+            dataPointsAOutside.push({
+                label: dateTime[i],
+                x : new Date(dateTime[i]),
+                y: arellano_outside_vpd[i]
+            });
+            }
             // console.log(dataPoints1);
             // console.log(dataPoints);
-            var chart = new CanvasJS.Chart("chartContainer", {
+        //Inside Vs Arellano VPD CHart
+        var chart = new CanvasJS.Chart("chartContainer", {
 		title:{
-			text: "VPD ' vs VPD''"              
+			text: "VPD(i) vs VPD1"              
         },
         zoomEnabled: true,
         legend: {
-       horizontalAlign: "center", // "center" , "right"
-       verticalAlign: "top",  // "top" , "bottom"
-       fontSize: 15,
-       itemclick:toggleDataSeries,
-       cursor: "pointer"
+        dockInsidePlotArea: true,
+        horizontalAlign: "center", // "center" , "right"
+        verticalAlign: "top",  // "top" , "bottom"
+        fontSize: 15,
+        itemclick:toggleDataSeries,
+        cursor: "pointer"
         },
+        toolTip: {
+        shared:true,
+        content: "{name} at {label} : {y}"
+       },
         axisX: {
+            title:"Time (hours)",
             intervalType: "hour",
-            valueFormatString: "YYYY-MM-DD HH:mm:ss",
             labelMaxWidth: 100, // change label width accordingly
+            // interlacedColor:"grey"
+            labelFormatter: function (e) {
+				return CanvasJS.formatDate( e.value, "DD MMM YYYY");
+			},
+            labelAngle: 0,
         },
         axisY:{
-            stripLines:[{
-                value:1.10,
-                label:"Maximum" 
-            },
-            {
-                value:0.52,
-                label:"Minimum"
-            }
-        ]
+            title:"VPD (kPa)",
+            gridThickness:0,
+            // stripLines:[
+            //     {
+            //     startValue:0.45,
+            //     endValue:1.25,                
+            //     color:"#20B2AA",
+            //     label : "Ideal Range",
+            //     labelFontColor: "#20B2AA",
+            //     opacity:0.5, 
+            //     labelAlign:"near",
+            //     labelPlacement:"inside",
+            //     labelFontWeight:"bold",
+            //     showOnTop:true,
+
+            // },
+            //     {
+            //     startValue:0.53,
+            //     endValue:1.10,                
+            //     color:"#00FF00",
+            //     label : "Optimal Range (Present Study)",
+            //     labelFontColor: "#00FF00",
+            //     labelPlacement:"inside",
+            //     labelAlign:"center",
+            //     opacity:0.5,
+            //     labelFontWeight:"bold",
+            //     showOnTop:true,
+
+            // },
+
+
+            // {
+            //     startValue:0.8,
+            //     endValue:0.95,                
+            //     color:"#808000",
+            //     label : "Optimal Range",
+            //     labelFontColor: "#808000",
+            //     opacity:0.5, 
+            //     labelAlign:"far",
+            //     labelPlacement:"inside",
+            //     labelFontWeight:"bold",
+            //     showOnTop:true,
+            // },
+            
+            // ],
+        
+        // interlacedColor:"#F8F1E4"
         },
 		data: [              
 		{
 			// Change type to "doughnut", "line", "splineArea", etc.
+            name:"VPD",
+            type: "line",
+            showInLegend: true,
+            legendText: "VPD",
+			dataPoints: dataPointsInside,
+        },
+        {
+            name:"VPD1",
+            type: "line",
+            showInLegend: true,
+            legendText: "VPD1",
+            dataPoints: dataPointsAInside,
+        }
+		]
+	});
+
+
+        //Outside vs Arellano VPD CHart
+        var chart1 = new CanvasJS.Chart("chartContainer1", {
+		title:{
+			text: "VPD' vs VPD1"              
+        },
+        zoomEnabled: true,
+        legend: {
+        dockInsidePlotArea: true,
+        horizontalAlign: "center", // "center" , "right"
+        verticalAlign: "top",  // "top" , "bottom"
+        fontSize: 15,
+        itemclick:toggleDataSeries,
+        cursor: "pointer"
+        },
+        toolTip: {
+        shared:true,
+        content: "{name} at {label} : {y}"
+       },
+        axisX: {
+            title:"Time (hour)",
+            intervalType: "hour",
+            valueFormatString: "YYYY-MM-DD HH:mm:ss",
+            labelMaxWidth: 100, // change label width accordingly
+            // interlacedColor:"grey"
+            labelFormatter: function (e) {
+				return CanvasJS.formatDate( e.value, "DD MMM YYYY");
+			},
+            labelAngle: 0,
+        },
+        axisY:{
+            title:"VPD (kPa)",
+            gridThickness:0,
+        //     stripLines:[{
+        //         startValue:0.53,
+        //         endValue:1.10,                
+        //         color:"#00FF00",
+        //         label : "Optimal Range",
+        //         labelFontColor: "#a8a8a8" 
+        //     }
+        // ],
+        // interlacedColor:"#F8F1E4"
+        },
+		data: [              
+		{
+			// Change type to "doughnut", "line", "splineArea", etc.
+            name:"VPD'",
             type: "line",
             showInLegend: true,
             legendText: "VPD'",
-			dataPoints: dataPoints,
+			dataPoints: dataPointsOutside,
         },
         {
+            name:"VPD",
             type: "line",
             showInLegend: true,
-            legendText: "VPD\'\'",
-            dataPoints: dataPoints1,
+            legendText: "VPD",
+            dataPoints: dataPointsAInside,
+        }
+		]
+    	});
+        //Inside VPD CHart
+        var chart2 = new CanvasJS.Chart("chartContainer2", {
+		title:{
+			text: "VPD"              
+        },
+        zoomEnabled: true,
+        legend: {
+        dockInsidePlotArea: true,
+        horizontalAlign: "center", // "center" , "right"
+        verticalAlign: "top",  // "top" , "bottom"
+        fontSize: 15,
+        itemclick:toggleDataSeries,
+        cursor: "pointer"
+        },
+        toolTip: {
+        shared:true,
+        content: "{name} at {label} : {y}"
+       },
+        axisX: {
+            title:"Time (hour)",
+            intervalType: "hour",
+            valueFormatString: "YYYY-MM-DD HH:mm:ss",
+            labelMaxWidth: 100, // change label width accordingly
+            // interlacedColor:"grey"
+            labelFormatter: function (e) {
+				return CanvasJS.formatDate( e.value, "DD MMM YYYY");
+			},
+            labelAngle: 0,
+        },
+        axisY:{
+            title:"VPD (kPa)",
+            gridThickness:0,
+        //     stripLines:[{
+        //         startValue:0.53,
+        //         endValue:1.10,                
+        //         color:"#00FF00",
+        //         label : "Optimal Range",
+        //         labelFontColor: "#a8a8a8" 
+        //     }
+        // ],
+        // interlacedColor:"#F8F1E4"
+        },
+		data: [              
+		{
+			// Change type to "doughnut", "line", "splineArea", etc.
+            name:"VPD",
+            type: "line",
+            showInLegend: true,
+            legendText: "VPD",
+			dataPoints: dataPointsInside,
+        },
+		]
+	});
+            //Outside VPD CHart
+        var chart3 = new CanvasJS.Chart("chartContainer3", {
+		title:{
+			text: "VPD'"              
+        },
+        zoomEnabled: true,
+        legend: {
+        dockInsidePlotArea: true,
+        horizontalAlign: "center", // "center" , "right"
+        verticalAlign: "top",  // "top" , "bottom"
+        fontSize: 15,
+        itemclick:toggleDataSeries,
+        cursor: "pointer"
+        },
+        toolTip: {
+        shared:true,
+        content: "{name} at {label} : {y}"
+       },
+        axisX: {
+            title:"Time (hour)",
+            intervalType: "hour",
+            valueFormatString: "YYYY-MM-DD HH:mm:ss",
+            labelMaxWidth: 100, // change label width accordingly
+            // interlacedColor:"grey"
+            labelFormatter: function (e) {
+				return CanvasJS.formatDate( e.value, "DD MMM YYYY");
+			},
+            labelAngle: 0,
+        },
+        axisY:{
+            title:"VPD (kPd)",
+            gridThickness:0,
+        //     stripLines:[{
+        //         startValue:0.53,
+        //         endValue:1.10,                
+        //         color:"#00FF00",
+        //         label : "Optimal Range",
+        //         labelFontColor: "#a8a8a8" 
+        //     }
+        // ],
+        // interlacedColor:"#F8F1E4"
+        },
+		data: [              
+		{
+			// Change type to "doughnut", "line", "splineArea", etc.
+            name:"VPD'",
+            type: "line",
+            showInLegend: true,
+            legendText: "VPD'",
+			dataPoints: dataPointsOutside,
+        },
+		]
+	});
+    //Inside VPD vs Outside VPD
+
+        var chart4 = new CanvasJS.Chart("chartContainer4", {
+		title:{
+			text: "VPD vs VPD'"              
+        },
+        zoomEnabled: true,
+        legend: {
+        dockInsidePlotArea: true,
+        horizontalAlign: "center", // "center" , "right"
+        verticalAlign: "top",  // "top" , "bottom"
+        fontSize: 15,
+        itemclick:toggleDataSeries,
+        cursor: "pointer"
+        },
+        toolTip: {
+        shared:true,
+        content: "{name} at {label} : {y}"
+       },
+        axisX: {
+            title:"Time (hour)",
+            intervalType: "hour",
+            valueFormatString: "YYYY-MM-DD HH:mm:ss",
+            labelMaxWidth: 100, // change label width accordingly
+            // interlacedColor:"grey"
+            labelFormatter: function (e) {
+				return CanvasJS.formatDate( e.value, "DD MMM YYYY");
+			},
+            labelAngle: 0,
+        },
+        axisY:{
+            title:"VPD (kPa)",
+            gridThickness:0,
+        //     stripLines:[{
+        //         startValue:0.53,
+        //         endValue:1.10,                
+        //         color:"#00FF00",
+        //         label : "Optimal Range",
+        //         labelFontColor: "#a8a8a8" 
+        //     }
+        // ],
+        // interlacedColor:"#F8F1E4"
+        },
+		data: [              
+		{
+			// Change type to "doughnut", "line", "splineArea", etc.
+            name:"VPD",
+            type: "line",
+            showInLegend: true,
+            legendText: "VPD",
+			dataPoints: dataPointsInside,
+        },
+        {
+            name:"VPD'",
+            type: "line",
+            showInLegend: true,
+            legendText: "VPD'",
+            dataPoints: dataPointsOutside,
         }
 		]
 	});
     chart.render();
+    chart1.render();
+    chart2.render();
+    chart3.render();
+    chart4.render();
     function toggleDataSeries(e) {
-	if(typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
-		e.dataSeries.visible = false;
-	}
-	else {
-		e.dataSeries.visible = true;            
-	}
-	chart.render();
-}
-
-
+        if(typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+            e.dataSeries.visible = false;
+        }
+        else {
+            e.dataSeries.visible = true;
+        }
+        chart.render();
+        chart1.render();
+    }
                 }
             })
         })
-	
-	
-	
 	})
 	
 	
