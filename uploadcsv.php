@@ -9,7 +9,7 @@
 
       <div class="container">
 		<div class="row justify-content-center">
-		  <div class="col-6">
+		  <div class="col-sm-6">
 			   <form method="post" class="border" onsubmit="return false;" id="upload_data" >
 			   <div class="form-group">
                <label for="csv_data"><strong>Upload CSV:</strong></label>
@@ -23,9 +23,9 @@
 		  </div>
 	  
 		</div>
-	<table id="show_data" class="table_data table table-border">
+	<!-- <table id="show_data" class="table_data table table-border">
 		
-	</table>
+	</table> -->
     <canvas id="myChart" width="400" height="400"></canvas>
 
       </div>
@@ -45,14 +45,18 @@
 				contentType:false,
 				processData:false,
 				data:new FormData($("#upload_data")[0]),
+				beforeSend:function(){
+
+				},
 				success:function(res){
-				$.each(res,function(key,value){
-				$("#show_data").append("<tr>")
-					$.each(value, function(key,value){
-						// console.log(key + ": " + value);
-						$("#show_data").append("<td>"+ value +"</td>")
-					})
-				$("#show_data").append("</tr>")
+				// $.each(res,function(key,value){
+				// $("#show_data").append("<tr>")
+				// 	$.each(value, function(key,value){
+				// 		// console.log(key + ": " + value);
+				// 		$("#show_data").append("<td>"+ value +"</td>")
+				// 	})
+				// $("#show_data").append("</tr>")
+
 				})
 				
 				}

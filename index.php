@@ -11,7 +11,7 @@
 
       <div class="container">
           <div class="row justify-content-center">
-            <div class="col-6-sm border" id="upload_internal">
+            <div class="col-sm-6 border" id="upload_internal">
                     <h4>Vapour Pressure Deficit(Inside)</h4>
                     <div class="form-group">
                             <label for="air_temp">Air Temprature in plant community(<sup>o</sup>C)</label>
@@ -26,7 +26,7 @@
                 </div>
           </div>
           <div class="row justify-content-center">
-            <div class="col-6-sm result border">
+            <div class="col-sm-6 result border">
 
             </div>
           </div>
