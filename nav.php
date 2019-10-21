@@ -17,7 +17,7 @@
                         <a class="nav-link" href="uploadcsv.php">Upload CSV</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="get_charts.php">Get Charts</a>
+                        <a class="nav-link" href="get_charts1.php">Get Charts</a>
                     </li>
                     
                 </ul>

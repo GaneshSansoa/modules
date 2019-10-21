@@ -49,9 +49,18 @@ main {
   }
   #upload_data{
       padding:50px;
-      position: relative;
+      /* position: relative;
       top:30%;
-      transform: translateY(30%);
+      transform: translateY(30%); */
+  }
+  #upload_result i{
+      margin:auto;
+      display:block;
+    font-size:90px;
+  text-align: center;
+  }
+  #res{
+    padding:40px;
   }
   .result{
       padding:40px;
