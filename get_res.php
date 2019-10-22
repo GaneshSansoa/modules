@@ -1,10 +1,10 @@
 <?php
-
+session_start();
 include("config.php");
 // var_dump($_POST);
 if($_SERVER["REQUEST_METHOD"] == "GET"){
-    $max_q = "SELECT MAX(Date) as Date from dataset";
-    $min_q = "SELECT MIN(Date) as Date from dataset";
+    $max_q = "SELECT MAX(Date) as Date from dataset where user_id =".$_SESSION["id"]."";
+    $min_q = "SELECT MIN(Date) as Date from dataset where user_id = ".$_SESSION["id"]."";
     $min_date;
     $max_date;
     $res1 = $conn->query($max_q);
@@ -30,7 +30,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $start = date('Y-m-d H:00:00', strtotime($start));
     $end = date('Y-m-d H:00:00', strtotime($end));
     // echo $myd;
-    $query = "select HOUR(Date) as Date,Date(Date) as Date1,Date as Date2,Tapc,Eapc,Taos,Eaos from dataset where Date >= '".$start."' and Date <= '".$end."'";
+    $query = "select HOUR(Date) as Date,Date(Date) as Date1,Date as Date2,Tapc,Eapc,Taos,Eaos from dataset where Date >= '".$start."' and Date <= '".$end."' and user_id='".$_SESSION["id"]."'";
     $res = $conn->query($query);
     $data = array();
     if($res->num_rows > 0){

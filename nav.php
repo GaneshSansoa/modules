@@ -6,9 +6,11 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
+                
+                <?php if(isset($_SESSION["loggedin"])){?>
+                    <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="index.php">Inner VPD Calculate</a>
+                        <a class="nav-link" href="mod1.php">Inner VPD Calculate</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="mod2.php">Outer VPD Calculate</a>
@@ -21,26 +23,28 @@
                     </li>
                     
                 </ul>
-                <!-- <ul class="navbar-nav ml-auto">
+                <ul class="navbar-nav ml-auto">
                         <li class="nav-item dropdown">
                             <a href="" class="nav-link dropdown-toggle"
-                            data-toggle="dropdown" id="navbarDropdownMenuLink">Your Ideas</a>
+                            data-toggle="dropdown" id="navbarDropdownMenuLink">Settings</a>
                             <div class="dropdown-menu">
-                                <a href="#" class="dropdown-item">Ideas</a>
-                                <a href="#" class="dropdown-item">Add</a>
+                                <a href="#" class="dropdown-item">Change Password</a>
+                                <a href="logout.php" class="dropdown-item">Logout</a>
                             </div>
                         </li>
-                        <li class="nav-item">
-                        <a href="#" class="nav-link">Logout</a>
-                    </li>
 
+                </ul>
+                <?php } else{?>
+                    <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
-                            <a href="#" class="nav-link">Login</a>
+                            <a href="index.php" class="nav-link">Login</a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">Register</a>
+                            <a href="register.php" class="nav-link">Register</a>
                         </li>
-                </ul> -->
+
+                </ul>
+                <?php } ?>
             </div>
         </div>
     </nav>

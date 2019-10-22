@@ -53,6 +53,9 @@ main {
       top:30%;
       transform: translateY(30%); */
   }
+  #upload_result{
+    padding:20px;
+  }
   #upload_result i{
       margin:auto;
       display:block;

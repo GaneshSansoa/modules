@@ -1,3 +1,10 @@
+<?php
+session_start();
+if(!isset($_SESSION["loggedin"])){
+    header("Location: index.php");
+    exit();
+}
+?>
 <!doctype html>
 <html lang="en">
 <?php include_once("common-head.php");?>
@@ -14,7 +21,7 @@
 					<h5>Instructions to Upload CSV</h5>
 					<ul>
 						<li>Download this <a href="sample_format.csv">Sample.csv</a> file. Ensure that each field hold its particular values and with proper formats.</li>
-						<li>Date Field must be in DateTime Format. E.g. 10/10/2019 10:00:00</li>
+						<li>Date Field must be in DateTime Format. E.g. yyyy-m-d h:mm (2016-12-6 0:00)</li>
 						<li>Tapc and Eapc are inside temprature and humidity respectively.</li>
 						<li>Taos and Eaos are outside temprature and humidity respectively.</li>
 					</ul>
@@ -63,7 +70,7 @@
 			// console.log(formData);
 			var ext = $('input[type="file"]').val().split('.').pop().toLowerCase();
 			if($.inArray(ext, ['csv']) == -1) {
-				$("#res").html('<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>\
+				$("#upload_result").html('<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>\
 					<center><h4>Wrong File Format...</h4>\
 					<p>Reason: Uploaded Format .'+ ext +' allowed .csv</p></center>\
 					');
@@ -76,8 +83,10 @@
 				processData:false,
 				data:new FormData($("#upload_data")[0]),
 				beforeSend:function(){
-					$("#res").html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>\
-					<center><h4>Uploading Data Please Be Patient...</h4></center>');
+					$("#upload_result").html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>\
+	 				<center><h4>Uploading Data Please Be Patient...</h4>\
+					 <p>More Data requires more time to upload</p>\
+					 </center>');
 				},
 
 				success:function(res){
@@ -90,11 +99,24 @@
 				// $("#show_data").append("</tr>")
 				console.log(res.msg);
 					if(res.msg == "success"){
-						$("#res").html('<i class="fa fa-check"></i>\
-					<center><h4>Data Uploaded...</h4></center>');						
+						var htm = '';
+
+						if(res.error > 0){
+							htm += "<select class='form-control'> <option>Reasons:</option>"
+							$.each(res.error_reason,function(key,value){
+								console.log(value);
+								htm+= "<option>"+value+"</option>";
+							})
+							htm+="</select>";
+						}
+						$("#upload_result").html('<i class="fa fa-check"></i>\
+					<center><h4>Data Uploaded(Look below for details..)</h4>\
+					<p>Total Entries: '+res.enteries+', Successfully Stored Entries: '+res.success+', Total Errors: '+res.error+'</p>\
+					'+htm+'\
+					</center>');						
 					}
 					else{
-						$("#res").html('<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>\
+						$("#upload_result").html('<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>\
 					<center><h4>Could not Upload Data...</h4>\
 					<p>Reason: '+res.reason+'</p></center>\
 					');
