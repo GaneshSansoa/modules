@@ -14,19 +14,22 @@ if(!isset($_SESSION["loggedin"])){
 
       <div class="container">
           <div class="row justify-content-center">
-            <div class="col-6 border" id="upload_outer">
-                    <h4>Vapour Pressure Deficit(Outside)</h4>
+            <div class="col-sm-6 border" id="upload_outer">
+                    <h4>Vapour Pressure Deficit(VPD')</h4>
+                    <form id="form_submit" onsubmit="return false;">
                     <div class="form-group">
                             <label for="air_temp">Air Temprature(<sup>o</sup>C)</label>
-                            <input type="text" class="form-control" name="air_temp">
+                            <input type="number" class="form-control" name="air_temp" required min="10" max="50" value="10" step="0.01">
+                            <p style="font-size:12px;font-weight:bolder;">Range Between(10 to 50&#8451;)</p>
                     </div>
                     <div class="form-group">
                             <label for="rel_hum">Relative Humidity of outside air time t(%)</label>
-                            <input type="text" class="form-control" name="rel_hum">
+                            <input type="number" class="form-control" name="rel_hum"required min="30" max="100" value="30" step="0.01">
+                            <p style="font-size:12px;font-weight:bolder;">Range Between(30 to 100%)</p>
                     </div>
                     <div class="form-group">
                             <label for="outside_time">Time</label>
-                            <select name="outside_time" id="" class="form-control">
+                            <select name="outside_time" id="" class="form-control" required>
                                 <?php
                                 for($i = 0 ; $i <= 24; $i++){
                                     ?>
@@ -38,10 +41,11 @@ if(!isset($_SESSION["loggedin"])){
                             <!-- <input type="text" name="outside_time" class="form-control" id=""> -->
                     </div>
                     <button class="btn btn-primary" id="calc_vpd">Calculate</button>
+                    </form>
                 </div>
           </div>
           <div class="row justify-content-center">
-            <div class="col-6 result border">
+            <div class="col-sm-6 result border">
 
             </div>
           </div>
@@ -57,11 +61,12 @@ if(!isset($_SESSION["loggedin"])){
     <script>
         $(document).ready(function(){
             $(".result").hide();
-            $("#calc_vpd").click(function(){
+            $("#form_submit").submit(function(){
+                var form_data = $("#form_submit").serializeArray();
                 console.log(Math.exp(Math.exp(-0.0019 * t)));
-                var temp = $("input[name=air_temp]").val();
-                var hum = $("input[name=rel_hum]").val();
-                var t = $("select[name=outside_time]").val();
+                var temp = form_data[0].value;
+                var hum = form_data[1].value;
+                var t = form_data[2].value;
                 console.log(Math.exp(-0.0019 * t));
 
                 var sat_vap_pressure = 0.7392 * Math.exp(0.06264 * temp * (Math.exp(-0.0019 * t)));

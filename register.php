@@ -14,13 +14,13 @@ function randomPassword() {
 $from = 'gchaudhary1995@gmail.com';
 $rand_pass = randomPassword();
 $to_email = 'gchaudhary1995@gmail.com';
-$subject = 'Testing PHP Mail';
+$subject = 'About VPD Module...';
 $message = '<html><body>';
 $message .= '<p>Email:'. $_POST['email'] . '</p>';
 $message .= '<p>Organisation:' . $_POST['organisation'] . '</p>';
 $message .='<p>Designation:'. $_POST['designation'] . '</p>';
 $message .='<p>Click Below to add his account to the module</p>';
-$message .='<a href ="'.$_SERVER['SERVER_NAME'].'/save_request.php?username='.$_POST["name"].'">www.example.com</a>';
+$message .='<a href ="'.$_SERVER['SERVER_NAME'].'/save_register.php?username='.$_POST["email"].'&password='.$rand_pass.'">Register User</a>';
 $message .='</body></html>';
 // $message = wordwrap($message,1000);
 // To send HTML mail, the Content-type header must be set
@@ -32,10 +32,12 @@ $headers .= 'From: '.$from."\r\n".
     'Reply-To: '.$from."\r\n" .
     'X-Mailer: PHP/' . phpversion();
 if(mail($to_email,$subject,$message,$headers)){
-
+    header('Content-type: application/json');
+        echo json_encode(array("msg"=>"success"));
 }
 else{
-    echo "something wrong..";
+    header('Content-type: application/json');
+    echo json_encode(array("msg"=>"fail","reason"=>"Mail Issue..."));
 }
 }
 else{
@@ -60,19 +62,19 @@ else{
               <form method="post" id="form_submit" onsubmit="return false;">                    
                 <div class="form-group">
                 <label for="email">Email:</label>
-                <input type="email" class="form-control" name="email">
+                <input type="email" required class="form-control" name="email">
                 </div>
                 <div class="form-group">
                 <label for="name">Name:</label>
-                <input type="name" class="form-control" name="name">
+                <input type="name" required class="form-control" name="name">
                 </div>
                 <div class="form-group">
                 <label for="organisation">Organisation Working:</label>
-                <input type="text" class="form-control" name="organisation">
+                <input type="text" required class="form-control" name="organisation">
                 </div>
                 <div class="form-group">
                 <label for="designation">Designation:</label>
-                <input type="text" class="form-control" name="designation">
+                <input type="text" required class="form-control" name="designation">
                 </div>
                 
                 <div class="form-group">
@@ -83,7 +85,13 @@ else{
                 </div>
           </div>
 
-
+          <div class="row justify-content-center">
+			<div class="col-sm-6">
+				<div id="upload_result">
+				
+				</div>
+			</div>
+		</div>
       </div>
 
     </main><!-- /.container -->
@@ -101,8 +109,19 @@ else{
               type:"POST",
               dataType:"json",
               data:$("#form_submit").serialize(),
-              success:function(){
-
+              success:function(res){
+                if(res.msg =="success"){
+                    $("#upload_result").html('<i class="fa fa-check"></i>\
+					<center><h4>Request Sent</h4>\
+					<p>We will contact you soon...</p></center>');
+					$("#form_submit").trigger("reset");
+                }
+                else{
+                    $("#upload_result").html('<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>\
+					<center><h4>Request could not sent..</h4>\
+					<p>Please try again later...</p></center>\
+					');
+                }
               }
             })
           })

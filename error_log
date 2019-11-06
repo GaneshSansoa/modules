@@ -1,0 +1,4 @@
+[31-Oct-2019 16:09:24 UTC] PHP Warning:  mysqli::__construct(): (HY000/1044): Access denied for user 'netguruj_vpd'@'localhost' to database 'agrometa_vpd' in /home/netguruj/public_html/vpd/config.php on line 6
+[31-Oct-2019 16:09:32 UTC] PHP Warning:  mysqli::__construct(): (HY000/1044): Access denied for user 'netguruj_vpd'@'localhost' to database 'agrometa_vpd' in /home/netguruj/public_html/vpd/config.php on line 6
+[31-Oct-2019 16:12:05 UTC] PHP Warning:  mysqli::__construct(): (HY000/1044): Access denied for user 'netguruj_vpd'@'localhost' to database 'netguruj_vpd' in /home/netguruj/public_html/vpd/config.php on line 6
+[31-Oct-2019 16:12:16 UTC] PHP Warning:  mysqli::__construct(): (HY000/1044): Access denied for user 'netguruj_vpd'@'localhost' to database 'netguruj_vpd' in /home/netguruj/public_html/vpd/config.php on line 6

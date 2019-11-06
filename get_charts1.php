@@ -119,7 +119,11 @@ if(!isset($_SESSION["loggedin"])){
             type:'GET',
             dataType:'json',
             success:function(res){
-
+                if(res.minDate == null && res.maxDate == null){
+                    $("#upload_req").hide();
+                    $("#show_data").html("<center>Data is not Available... Please upload CSV first!</center>");
+                }
+                else{
                 $("#show_data").html("Data is Available from: " + res.minDate + " to " + res.maxDate);
                 min_date = res.minDate;
                 max_date = res.maxDate;
@@ -136,6 +140,8 @@ if(!isset($_SESSION["loggedin"])){
                     minDate:min_date,
                     maxDate:max_date,
                 });
+                }
+
             }
         });
 
@@ -278,14 +284,10 @@ if(!isset($_SESSION["loggedin"])){
             // console.log(dataPoints);
         //Inside Vs Arellano VPD CHart
         var chart = new CanvasJS.Chart("chartContainer", {
-		title:{
-			text: "VPD vs VPD1" ,
-            fontFamily:"times new roman",             
-        },
         zoomEnabled: true,
         legend: {
         fontFamily:"times new roman",
-        dockInsidePlotArea: true,
+        dockInsidePlotArea: false,
         horizontalAlign: "center", // "center" , "right"
         verticalAlign: "top",  // "top" , "bottom"
         fontSize: 15,
@@ -383,13 +385,9 @@ if(!isset($_SESSION["loggedin"])){
 
         //Outside vs Arellano VPD CHart
         var chart1 = new CanvasJS.Chart("chartContainer1", {
-		title:{
-			text: "VPD' vs VPD1",
-            fontFamily:"times new roman",              
-        },
         zoomEnabled: true,
         legend: {
-        dockInsidePlotArea: true,
+        dockInsidePlotArea: false,
         horizontalAlign: "center", // "center" , "right"
         verticalAlign: "top",  // "top" , "bottom"
         fontSize: 15,
@@ -403,6 +401,7 @@ if(!isset($_SESSION["loggedin"])){
        },
         axisX: {
             title:"Time (hour)",
+            titleFontFamily:"times new roman",
             intervalType: "hour",
             valueFormatString: "YYYY-MM-DD HH:mm:ss",
             labelMaxWidth: 100, // change label width accordingly
@@ -414,6 +413,7 @@ if(!isset($_SESSION["loggedin"])){
         },
         axisY:{
             title:"VPD (kPa)",
+            titleFontFamily:"times new roman",
             gridThickness:0,
             stripLines:[      {
                 startValue:0.45,
@@ -480,12 +480,9 @@ if(!isset($_SESSION["loggedin"])){
     	});
         //Inside VPD CHart
         var chart2 = new CanvasJS.Chart("chartContainer2", {
-		title:{
-			text: "VPD"              
-        },
         zoomEnabled: true,
         legend: {
-        dockInsidePlotArea: true,
+        dockInsidePlotArea: false,
         horizontalAlign: "center", // "center" , "right"
         verticalAlign: "top",  // "top" , "bottom"
         fontSize: 15,
@@ -498,6 +495,7 @@ if(!isset($_SESSION["loggedin"])){
        },
         axisX: {
             title:"Time (hour)",
+            titleFontFamily:"times new roman",
             intervalType: "hour",
             valueFormatString: "YYYY-MM-DD HH:mm:ss",
             labelMaxWidth: 100, // change label width accordingly
@@ -509,6 +507,7 @@ if(!isset($_SESSION["loggedin"])){
         },
         axisY:{
             title:"VPD (kPa)",
+            titleFontFamily:"times new roman",
             gridThickness:0,
             stripLines:[      {
                 startValue:0.45,
@@ -568,12 +567,9 @@ if(!isset($_SESSION["loggedin"])){
 	});
             //Outside VPD CHart
         var chart3 = new CanvasJS.Chart("chartContainer3", {
-		title:{
-			text: "VPD'"              
-        },
         zoomEnabled: true,
         legend: {
-        dockInsidePlotArea: true,
+        dockInsidePlotArea: false,
         horizontalAlign: "center", // "center" , "right"
         verticalAlign: "top",  // "top" , "bottom"
         fontSize: 15,
@@ -586,6 +582,7 @@ if(!isset($_SESSION["loggedin"])){
        },
         axisX: {
             title:"Time (hour)",
+            titleFontFamily:"times new roman",
             intervalType: "hour",
             valueFormatString: "YYYY-MM-DD HH:mm:ss",
             labelMaxWidth: 100, // change label width accordingly
@@ -597,6 +594,7 @@ if(!isset($_SESSION["loggedin"])){
         },
         axisY:{
             title:"VPD (kPd)",
+            titleFontFamily:"times new roman",
             gridThickness:0,
             stripLines:[      {
                 startValue:0.45,
@@ -657,12 +655,9 @@ if(!isset($_SESSION["loggedin"])){
     //Inside VPD vs Outside VPD
 
         var chart4 = new CanvasJS.Chart("chartContainer4", {
-		title:{
-			text: "VPD vs VPD'"              
-        },
         zoomEnabled: true,
         legend: {
-        dockInsidePlotArea: true,
+        dockInsidePlotArea: false,
         horizontalAlign: "center", // "center" , "right"
         verticalAlign: "top",  // "top" , "bottom"
         fontSize: 15,
@@ -675,6 +670,7 @@ if(!isset($_SESSION["loggedin"])){
        },
         axisX: {
             title:"Time (hour)",
+            titleFontFamily:"times new roman",
             intervalType: "hour",
             valueFormatString: "YYYY-MM-DD HH:mm:ss",
             labelMaxWidth: 100, // change label width accordingly
@@ -686,6 +682,7 @@ if(!isset($_SESSION["loggedin"])){
         },
         axisY:{
             title:"VPD (kPa)",
+            titleFontFamily:"times new roman",
             gridThickness:0,
             stripLines:[      {
                 startValue:0.45,

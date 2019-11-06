@@ -1,7 +1,7 @@
 
 <?php
 $server = "localhost";
-$user = "root";
+$user ="root";
 $password = "";
 $conn = new mysqli($server,$user,$password,"vpd");
 if($conn->connect_error){
